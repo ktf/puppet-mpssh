@@ -1,12 +1,21 @@
-class root (
-  $src = "/home/eulisse/src",
-  $prefix = "/home/eulisse/sw/root",
-  $root_repo = "root-mirror/root"
+class mpssh (
+  $home = "/home/eulisse",
+  $src = "$home/src",
+  $prefix = "$home/sw",
+  $repo = "ndenev/mpssh"
 )
 {
   include protobuilder
-  protobuilder::build{"root":
-    repo => "root-mirror/root",
-    ref => "v5-34-30"
+
+  protobuilder::build{"mpssh":
+    repo => "$repo"
+  }->
+  file {"${home}/.mpssh":
+    ensure => directory,
+    mode => "0755",
+  }->
+  file {"${home}/.mpssh/hosts":
+    ensure => symlink,
+    target => "${home}/dotfiles/mpssh-hosts",
   }
 }
